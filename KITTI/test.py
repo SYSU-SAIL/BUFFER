@@ -24,7 +24,7 @@ if __name__ == '__main__':
     # load the weight
     for stage in cfg.train.all_stage:
         model_path = 'snapshot/%s/%s/best.pth' % (experiment_id, stage)
-        state_dict = torch.load(model_path)
+        state_dict = torch.load(model_path, weights_only=True)
         new_dict = {k: v for k, v in state_dict.items() if stage in k}
         model_dict = model.state_dict()
         model_dict.update(new_dict)

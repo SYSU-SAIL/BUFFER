@@ -31,13 +31,13 @@ class Args(object):
         left_stage = copy.deepcopy(cfg.train.all_stage)
         left_stage.remove(cfg.stage)
         if cfg.train.pretrain_model != '':
-            state_dict = torch.load(cfg.train.pretrain_model)
+            state_dict = torch.load(cfg.train.pretrain_model, weights_only=True)
             self.model.load_state_dict(state_dict)
             print(f"Load pretrained model from {cfg.train.pretrain_model}\n")
         for modname in left_stage:
             weight_path = cfg.snapshot_root + f'/{modname}/best.pth'
             if os.path.exists(weight_path):
-                state_dict = torch.load(weight_path)
+                state_dict = torch.load(weight_path, weights_only=True)
                 new_dict = {k: v for k, v in state_dict.items() if modname in k}
                 model_dict = self.model.state_dict()
                 model_dict.update(new_dict)
